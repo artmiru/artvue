@@ -111,6 +111,24 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
+        'artmir' => [
+            'driver' => 'mysql',
+            'host' => env('ARTMIR_DB_HOST', '127.0.0.1'),
+            'port' => env('ARTMIR_DB_PORT', '3306'),
+            'database' => env('ARTMIR_DB_DATABASE', 'artmir'),
+            'username' => env('ARTMIR_DB_USERNAME', 'root'),
+            'password' => env('ARTMIR_DB_PASSWORD', ''),
+            'unix_socket' => env('ARTMIR_DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
 
     ],
 
@@ -168,7 +186,6 @@ return [
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
         ],
-
     ],
 
 ];

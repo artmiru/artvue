@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Facades\Artisan;
+
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,11 +15,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            CoursesTableSeeder::class,
         ]);
+        if (app()->environment(['local', 'staging'])) {
+            try {
+                Artisan::call('schedule:generate');
+                $this->command->info('Schedule generated successfully');
+            } catch (\Throwable $e) {
+                $this->command->error('Schedule generation failed: '.$e->getMessage());
+                logger()->error('Schedule generation error', ['exception' => $e]);
+            }
+        } else {
+            $this->command->warn('Schedule generation skipped in production environment');
+        }
     }
 }

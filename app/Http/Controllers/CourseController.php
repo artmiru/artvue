@@ -15,6 +15,10 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::all();
+        // Проверяем, является ли запрос Inertia запросом
+        if (request()->header('X-Inertia')) {
+            return $courses;
+        }
         return response()->json($courses);
     }
 
@@ -35,6 +39,7 @@ class CourseController extends Controller
             'slug' => 'required|string|unique:courses',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
+            'category' => 'nullable|string|max:255',
         ]);
 
         $course = Course::create($validated);
@@ -71,6 +76,7 @@ class CourseController extends Controller
             'slug' => 'sometimes|required|string|unique:courses,slug,' . $course->id,
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
+            'category' => 'nullable|string|max:255',
         ]);
 
         $course->update($validated);

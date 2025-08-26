@@ -20,6 +20,7 @@ class Course extends Model
         'slug',
         'meta_title',
         'meta_description',
+        'category',
     ];
 
     /**

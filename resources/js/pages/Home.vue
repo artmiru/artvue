@@ -1,6 +1,19 @@
 <script setup lang="ts">
 import { dashboard, login, register } from '@/routes';
 import { Head, Link } from '@inertiajs/vue3';
+import Courses from '@/components/Courses.vue';
+import { ref, onMounted } from 'vue';
+
+// Определение типов для курса, соответствующее компоненту Courses.vue
+interface Course {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  alt: string;
+  price: number;
+  slug: string;
+}
 
 // Определение типов для props
 interface Props {
@@ -14,6 +27,35 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   auth: () => ({ user: null }),
   name: undefined
+});
+
+// Реактивная переменная для хранения курсов
+const courses = ref<Course[]>([]);
+
+// Функция для получения курсов с сервера
+const fetchCourses = async () => {
+  try {
+    const response = await fetch('/api/courses');
+    const data = await response.json();
+    
+    // Преобразуем данные в формат, ожидаемый компонентом Courses
+    courses.value = data.map((course: any) => ({
+      id: course.id,
+      name: course.name,
+      description: course.description,
+      image: course.image,
+      alt: course.alt,
+      price: course.price,
+      slug: course.slug
+    }));
+  } catch (error) {
+    console.error('Ошибка при получении курсов:', error);
+  }
+};
+
+// Получаем курсы при монтировании компонента
+onMounted(() => {
+  fetchCourses();
 });
 
 </script>
@@ -82,6 +124,12 @@ const props = withDefaults(defineProps<Props>(), {
             Sign In
           </Link>
         </div>
+      </div>
+      
+      <!-- Пример использования компонента Courses -->
+      <div class="mt-12">
+        <h2 class="text-2xl font-bold mb-6 text-center">Наши курсы</h2>
+        <Courses :courses="courses" />
       </div>
     </main>
   </div>

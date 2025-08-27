@@ -11,7 +11,7 @@ import { register } from '@/routes';
 import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
-import { formatPhone } from '@/helpers/phoneHelper';
+import { formatPhone } from '@/helpers/phoneHelper.js';
 
 defineProps<{
     status?: string;
@@ -19,8 +19,8 @@ defineProps<{
 }>();
 
 // Функция для форматирования номера телефона при вводе
-const formatPhoneInput = (event) => {
-    const input = event.target;
+const formatPhoneInput = (event: Event) => {
+    const input = event.target as HTMLInputElement;
     const value = input.value.replace(/\D/g, '');
     const formatted = formatPhone(value);
     input.value = formatted;

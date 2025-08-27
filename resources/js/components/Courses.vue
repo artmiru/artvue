@@ -15,11 +15,13 @@ interface Course {
 // Определение типов для props
 interface Props {
   courses: Course[]
+  loading?: boolean
 }
 
 // Получение props с валидацией
 const props = withDefaults(defineProps<Props>(), {
-  courses: () => []
+  courses: () => [],
+  loading: false
 })
 
 // Вычисляемое свойство для URL курса
@@ -48,9 +50,9 @@ const formatPrice = (price: number): string => {
         >
           <a
             :href="getCourseUrl(course)"
-            class="block border rounded bg-white shadow-md flex flex-col w-full border-neutral-300"
+            class="border rounded bg-white shadow-md flex flex-col w-full border-neutral-300"
           >
-            <h2 class="pt-3 pb-1 text-2xl font-medium px-3 text-center">{{ course.name }}</h2>
+            <h2 class="pt-3 pb-1 text-lg  md:text-xl lg:text-2xl font-medium px-3 text-center">{{ course.name }}</h2>
 
             <div class="photo flex-grow">
               <img
@@ -67,10 +69,10 @@ const formatPrice = (price: number): string => {
 
             <div class="items-center flex justify-between p-3 pt-0 mt-auto">
               <div class="price inline-flex items-center relative -start-4">
-                <div class="body bg-red-500 text-white relative text-lg py-1 flex items-center pl-9 pr-2">
+                <div class="body bg-red-500 text-white relative text-xl py-1 flex items-center pl-9 pr-2">
                   {{ formatPrice(course.price) }}
                 </div>
-                <div class="arrow absolute block"></div>
+                <div class="arrow absolute w-0 h-0 border-t-[19px] border-t-transparent border-b-[18px] border-b-transparent border-l-[14px] border-l-red-500 top-0 -right-[13px]"></div>
               </div>
 
               <a
@@ -85,8 +87,32 @@ const formatPrice = (price: number): string => {
         </div>
       </div>
 
-      <div v-else class="text-center py-8">
-        <p class="text-gray-500 text-lg">Курсы временно недоступны. Пожалуйста, попробуйте позже.</p>
+      <!-- Skeleton Loaders -->
+      <div v-else-if="loading || (!loading && courses.length === 0)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div
+          v-for="i in 6"
+          :key="i"
+          class="w-full flex animate-pulse"
+        >
+          <div class="border rounded bg-white shadow-md flex flex-col w-full border-neutral-300">
+            <div class="pt-3 pb-1 px-3">
+              <div class="h-6 bg-gray-200 rounded w-3/4 mx-auto mb-2"></div>
+              <div class="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+            </div>
+
+            <div class="photo flex-grow">
+              <div class="bg-gray-200 border-t border-b w-full h-48"></div>
+              <div class="p-3 space-y-2">
+                <div class="h-4 bg-gray-200 rounded w-full"></div>
+                <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+              </div>
+            </div>
+
+            <div class="flex justify-end p-3 pt-0 mt-auto">
+                <div class="bg-gray-200 rounded w-1/3 h-8"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 </template>

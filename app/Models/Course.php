@@ -31,4 +31,26 @@ class Course extends Model
     protected $casts = [
         'price' => 'integer',
     ];
+
+    /**
+     * Get the price in rubles.
+     *
+     * @param  int  $value
+     * @return float
+     */
+    public function getPriceAttribute($value)
+    {
+        return $value / 100;
+    }
+
+    /**
+     * Set the price in rubles.
+     *
+     * @param  float  $value
+     * @return void
+     */
+    public function setPriceAttribute($value)
+    {
+        $this->attributes['price'] = $value * 100;
+    }
 }

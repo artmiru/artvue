@@ -37,7 +37,7 @@ const fetchCourses = async () => {
   try {
     const response = await fetch('/api/courses');
     const data = await response.json();
-    
+
     // Преобразуем данные в формат, ожидаемый компонентом Courses
     courses.value = data.map((course: any) => ({
       id: course.id,
@@ -67,7 +67,7 @@ onMounted(() => {
   <div class="min-h-screen bg-background">
 
     <header class="bg-card shadow">
-      <div class="container mx-auto px-4 py-4">
+      <div class="container mx-auto">
         <nav class="flex justify-between items-center">
           <div class="text-xl font-bold">
             {{ props.name }}
@@ -102,33 +102,9 @@ onMounted(() => {
       </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8">
-      <div class="max-w-3xl mx-auto text-center">
-        <h1 class="text-4xl font-bold mb-4">Welcome to {{ props.name }}</h1>
-        <p class="text-lg text-muted-foreground mb-8">
-          The best platform for managing your tasks and projects
-        </p>
-
-        <div v-if="!props.auth.user" class="flex flex-col sm:flex-row justify-center gap-4">
-          <Link
-            :href="register()"
-            class="px-6 py-3 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-lg font-medium"
-          >
-            Get Started
-          </Link>
-
-          <Link
-            :href="login()"
-            class="px-6 py-3 rounded-md bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors text-lg font-medium"
-          >
-            Sign In
-          </Link>
-        </div>
-      </div>
-      
-      <!-- Пример использования компонента Courses -->
-      <div class="mt-12">
-        <h2 class="text-2xl font-bold mb-6 text-center">Наши курсы</h2>
+    <main class="container mx-auto">
+       <div class="bg-neutral-100 py-8">
+        <h1 class="text-center text-2xl sm:text-3xl md:text-5xl mb-8 font-medium leading-snug">Художественные курсы для взрослых<br> в Санкт-Петербурге</h1>
         <Courses :courses="courses" />
       </div>
     </main>

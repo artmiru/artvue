@@ -9,14 +9,7 @@ import AuthBase from '@/layouts/AuthLayout.vue';
 import { login } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
-import { formatPhone } from '@/helpers/phoneHelper.js';
 
-const formatPhoneInput = (event: Event) => {
-    const input = event.target as HTMLInputElement;
-    const value = input.value.replace(/\D/g, '');
-    const formatted = formatPhone(value);
-    input.value = formatted;
-};
 </script>
 
 <template>
@@ -38,15 +31,14 @@ const formatPhoneInput = (event: Event) => {
 
                 <div class="grid gap-2">
                     <Label for="phone">Номер телефона</Label>
-                    <Input 
-                        id="phone" 
-                        type="tel" 
-                        required 
-                        :tabindex="2" 
-                        autocomplete="tel" 
-                        name="phone" 
-                        placeholder="+7 (921) 924-52-28"
-                        @input="formatPhoneInput"
+                    <Input
+                        id="phone"
+                        type="tel"
+                        required
+                        :tabindex="2"
+                        autocomplete="tel"
+                        name="phone"
+                        placeholder="Номер телефона"
                     />
                     <InputError :message="errors.phone" />
                 </div>

@@ -11,20 +11,11 @@ import { register } from '@/routes';
 import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
-import { formatPhone } from '@/helpers/phoneHelper.js';
 
 defineProps<{
     status?: string;
     canResetPassword: boolean;
 }>();
-
-// Функция для форматирования номера телефона при вводе
-const formatPhoneInput = (event: Event) => {
-    const input = event.target as HTMLInputElement;
-    const value = input.value.replace(/\D/g, '');
-    const formatted = formatPhone(value);
-    input.value = formatted;
-};
 </script>
 
 <template>
@@ -52,8 +43,7 @@ const formatPhoneInput = (event: Event) => {
                         autofocus
                         :tabindex="1"
                         autocomplete="tel"
-                        placeholder="+7 (921) 924-52-28"
-                        @input="formatPhoneInput"
+                        placeholder="Номер телефона"
                     />
                     <InputError :message="errors.phone" />
                 </div>

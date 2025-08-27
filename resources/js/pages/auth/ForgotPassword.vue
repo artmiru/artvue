@@ -9,15 +9,19 @@ import AuthLayout from '@/layouts/AuthLayout.vue';
 import { login } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import { formatPhone } from '@/helpers/phoneHelper';
 
-defineProps<{
-    status?: string;
-}>();
+const formatPhoneInput = (event) => {
+    const input = event.target;
+    const value = input.value.replace(/\D/g, '');
+    const formatted = formatPhone(value);
+    input.value = formatted;
+};
 </script>
 
 <template>
-    <AuthLayout title="Forgot password" description="Enter your email to receive a password reset link">
-        <Head title="Forgot password" />
+    <AuthLayout title="Забыли пароль?" description="Введите ваш номер телефона для получения кода сброса пароля">
+        <Head title="Забыли пароль?" />
 
         <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
             {{ status }}
@@ -26,22 +30,30 @@ defineProps<{
         <div class="space-y-6">
             <Form v-bind="PasswordResetLinkController.store.form()" v-slot="{ errors, processing }">
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
-                    <Input id="email" type="email" name="email" autocomplete="off" autofocus placeholder="email@example.com" />
-                    <InputError :message="errors.email" />
+                    <Label for="phone">Номер телефона</Label>
+                    <Input 
+                        id="phone" 
+                        type="tel" 
+                        name="phone" 
+                        autocomplete="off" 
+                        autofocus 
+                        placeholder="+7 (921) 924-52-28"
+                        @input="formatPhoneInput"
+                    />
+                    <InputError :message="errors.phone" />
                 </div>
 
                 <div class="my-6 flex items-center justify-start">
                     <Button class="w-full" :disabled="processing">
                         <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
-                        Email password reset link
+                        Отправить код сброса
                     </Button>
                 </div>
             </Form>
 
             <div class="space-x-1 text-center text-sm text-muted-foreground">
-                <span>Or, return to</span>
-                <TextLink :href="login()">log in</TextLink>
+                <span>Или</span>
+                <TextLink :href="login()">войти в аккаунт</TextLink>
             </div>
         </div>
     </AuthLayout>

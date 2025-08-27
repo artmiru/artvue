@@ -11,16 +11,25 @@ import { register } from '@/routes';
 import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import { formatPhone } from '@/helpers/phoneHelper';
 
 defineProps<{
     status?: string;
     canResetPassword: boolean;
 }>();
+
+// Функция для форматирования номера телефона при вводе
+const formatPhoneInput = (event) => {
+    const input = event.target;
+    const value = input.value.replace(/\D/g, '');
+    const formatted = formatPhone(value);
+    input.value = formatted;
+};
 </script>
 
 <template>
-    <AuthBase title="Log in to your account" description="Enter your email and password below to log in">
-        <Head title="Log in" />
+    <AuthBase title="Вход в аккаунт" description="Введите ваш номер телефона и пароль для входа">
+        <Head title="Вход" />
 
         <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
             {{ status }}
@@ -34,24 +43,25 @@ defineProps<{
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
+                    <Label for="phone">Номер телефона</Label>
                     <Input
-                        id="email"
-                        type="email"
-                        name="email"
+                        id="phone"
+                        type="tel"
+                        name="phone"
                         required
                         autofocus
                         :tabindex="1"
-                        autocomplete="email"
-                        placeholder="email@example.com"
+                        autocomplete="tel"
+                        placeholder="+7 (921) 924-52-28"
+                        @input="formatPhoneInput"
                     />
-                    <InputError :message="errors.email" />
+                    <InputError :message="errors.phone" />
                 </div>
 
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
-                        <Label for="password">Password</Label>
-                        <TextLink v-if="canResetPassword" :href="request()" class="text-sm" :tabindex="5"> Forgot password? </TextLink>
+                        <Label for="password">Пароль</Label>
+                        <TextLink v-if="canResetPassword" :href="request()" class="text-sm" :tabindex="5"> Забыли пароль? </TextLink>
                     </div>
                     <Input
                         id="password"
@@ -60,7 +70,7 @@ defineProps<{
                         required
                         :tabindex="2"
                         autocomplete="current-password"
-                        placeholder="Password"
+                        placeholder="Пароль"
                     />
                     <InputError :message="errors.password" />
                 </div>
@@ -68,19 +78,19 @@ defineProps<{
                 <div class="flex items-center justify-between">
                     <Label for="remember" class="flex items-center space-x-3">
                         <Checkbox id="remember" name="remember" :tabindex="3" />
-                        <span>Remember me</span>
+                        <span>Запомнить меня</span>
                     </Label>
                 </div>
 
                 <Button type="submit" class="mt-4 w-full" :tabindex="4" :disabled="processing">
                     <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
-                    Log in
+                    Войти
                 </Button>
             </div>
 
             <div class="text-center text-sm text-muted-foreground">
-                Don't have an account?
-                <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
+                Нет аккаунта?
+                <TextLink :href="register()" :tabindex="5">Зарегистрироваться</TextLink>
             </div>
         </Form>
     </AuthBase>

@@ -48,7 +48,7 @@ return new class extends Migration
 
         // Стандартные таблицы Laravel
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
+            $table->string('phone', 10)->primary()->comment('10 цифр номера телефона');
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });

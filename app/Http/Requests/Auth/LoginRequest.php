@@ -2,14 +2,19 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
+use App\Traits\PhoneHelper;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
+    use PhoneHelper;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -26,7 +31,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'phone' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
     }
@@ -40,14 +45,28 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+        // Извлечение 10 цифр из номера телефона
+        $phone = $this->extractDigits($this->phone);
 
+        // Проверка корректности номера телефона
+        if (!$phone || !$this->isValidRussianPhone($phone)) {
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'phone' => 'Некорректный номер телефона',
             ]);
         }
 
+        // Поиск пользователя по номеру телефона
+        $user = User::where('phone', $phone)->first();
+
+        if (!$user || !Hash::check($this->password, $user->password)) {
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'phone' => trans('auth.failed'),
+            ]);
+        }
+
+        Auth::login($user, $this->boolean('remember'));
         RateLimiter::clear($this->throttleKey());
     }
 
@@ -67,7 +86,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
+            'phone' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -79,10 +98,9 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return $this->string('email')
-            ->lower()
-            ->append('|'.$this->ip())
-            ->transliterate()
-            ->value();
+        // Извлечение 10 цифр из номера телефона для throttle key
+        $phone = $this->extractDigits($this->phone) ?: $this->phone;
+
+        return $phone . '|' . $this->ip();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Traits\PhoneHelper;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
+    use PhoneHelper;
     /**
      * Show the registration page.
      */
@@ -32,13 +34,33 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'phone' => 'required|string|unique:users,phone',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'phone.unique' => 'Этот номер телефона уже зарегистрирован',
+            'phone.required' => 'Номер телефона обязателен для заполнения',
         ]);
+
+        // Извлечение 10 цифр из номера телефона
+        $phone = $this->extractDigits($request->phone);
+        
+        // Проверка корректности номера телефона
+        if (!$phone || !$this->isValidRussianPhone($phone)) {
+            return back()->withErrors([
+                'phone' => 'Некорректный номер телефона',
+            ]);
+        }
+
+        // Проверка уникальности номера телефона (дополнительная проверка)
+        if (User::where('phone', $phone)->exists()) {
+            return back()->withErrors([
+                'phone' => 'Этот номер телефона уже зарегистрирован',
+            ]);
+        }
 
         $user = User::create([
             'name' => $request->name,
-            'email' => $request->email,
+            'phone' => $phone,
             'password' => Hash::make($request->password),
         ]);
 

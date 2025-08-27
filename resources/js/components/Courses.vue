@@ -9,7 +9,6 @@ interface Course {
   alt: string
   price: number // Цена в рублях (преобразуется из копеек моделью)
   slug: string
-  href?: string // Добавляем необязательное поле href
 }
 
 // Определение типов для props
@@ -19,15 +18,10 @@ interface Props {
 }
 
 // Получение props с валидацией
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   courses: () => [],
   loading: false
 })
-
-// Вычисляемое свойство для URL курса
-const getCourseUrl = (course: Course): string => {
-  return course.href || (course.slug ? `${course.slug}` : '#')
-}
 
 // Форматирование цены
 const formatPrice = (price: number): string => {
@@ -48,13 +42,10 @@ const formatPrice = (price: number): string => {
           :key="course.id"
           class="w-full flex"
         >
-          <a
-            :href="getCourseUrl(course)"
-            class="border rounded bg-white shadow-md flex flex-col w-full border-neutral-300"
-          >
+          <div class="border rounded bg-white shadow-md flex flex-col w-full border-neutral-300">
             <h2 class="pt-3 pb-1 text-lg  md:text-xl lg:text-2xl font-medium px-3 text-center">{{ course.name }}</h2>
 
-            <div class="photo flex-grow">
+            <div class="photo flex-grow min-h-56">
               <img
                 class="max-w-full h-auto w-full border-t border-b object-cover"
                 :src="`/assets/img/main/${course.image}`"
@@ -77,13 +68,13 @@ const formatPrice = (price: number): string => {
 
               <a
                 v-if="course.slug"
-                :href="`${course.slug}`"
+                :href="course.slug"
                 class="text-white text-base py-1 px-2 my-2 mr-2 w-1/2 inline-block text-center bg-red-500 rounded hover:bg-red-600"
               >
                 Подробнее
               </a>
             </div>
-          </a>
+          </div>
         </div>
       </div>
 
@@ -101,14 +92,10 @@ const formatPrice = (price: number): string => {
             </div>
 
             <div class="photo flex-grow">
-              <div class="bg-gray-200 border-t border-b w-full h-48"></div>
-              <div class="p-3 space-y-2">
-                <div class="h-4 bg-gray-200 rounded w-full"></div>
-                <div class="h-4 bg-gray-200 rounded w-5/6"></div>
-              </div>
+              <div class="bg-gray-200 border-t border-b w-full h-44"></div>
             </div>
 
-            <div class="flex justify-end p-3 pt-0 mt-auto">
+            <div class="flex justify-end p-3 pt-4 mt-auto">
                 <div class="bg-gray-200 rounded w-1/3 h-8"></div>
             </div>
           </div>

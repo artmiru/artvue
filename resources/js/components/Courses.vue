@@ -1,13 +1,13 @@
 <script setup lang="ts">
 // Определение типов для курса
-// Цена хранится в базе в копейках, но модель автоматически преобразует ее в рубли
+// Цена передается в рублях через атрибут formatted_price
 interface Course {
   id: number
   name: string
   description: string
   image: string
   alt: string
-  price: number // Цена в рублях (преобразуется из копеек моделью)
+  formatted_price: number // Цена в рублях (преобразуется из копеек моделью)
   slug: string
 }
 
@@ -61,7 +61,7 @@ const formatPrice = (price: number): string => {
             <div class="items-center flex justify-between p-3 pt-0 mt-auto">
               <div class="price inline-flex items-center relative -start-4">
                 <div class="body bg-red-500 text-white relative text-xl py-1 flex items-center pl-9 pr-2">
-                  {{ formatPrice(course.price) }}
+                  {{ formatPrice(course.formatted_price) }}
                 </div>
                 <div class="arrow absolute w-0 h-0 border-t-[19px] border-t-transparent border-b-[18px] border-b-transparent border-l-[14px] border-l-red-500 top-0 -right-[13px]"></div>
               </div>

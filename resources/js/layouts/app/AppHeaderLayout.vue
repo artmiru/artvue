@@ -5,19 +5,28 @@ import AppShell from '@/components/AppShell.vue';
 import type { BreadcrumbItemType } from '@/types';
 
 interface Props {
-    breadcrumbs?: BreadcrumbItemType[];
+  /**
+   * Массив элементов навигационной цепочки (breadcrumbs)
+   * @example [{ title: 'Home', href: '/' }, { title: 'Dashboard', href: '/dashboard' }]
+   */
+  breadcrumbs?: BreadcrumbItemType[];
 }
 
-withDefaults(defineProps<Props>(), {
-    breadcrumbs: () => [],
+/**
+ * Props for the AppHeaderLayout component with default values
+ *
+ * @prop {BreadcrumbItemType[]} breadcrumbs - Array of breadcrumb items (default: empty array)
+ */
+const props = withDefaults(defineProps<Props>(), {
+  breadcrumbs: () => [],
 });
 </script>
 
 <template>
-    <AppShell class="flex-col">
-        <AppHeader :breadcrumbs="breadcrumbs" />
-        <AppContent>
-            <slot />
-        </AppContent>
-    </AppShell>
+  <AppShell class="flex-col">
+    <AppHeader :breadcrumbs="props.breadcrumbs" />
+    <AppContent>
+      <slot />
+    </AppContent>
+  </AppShell>
 </template>

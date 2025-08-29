@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { dashboard, login, register } from '@/routes';
 import { Head, Link } from '@inertiajs/vue3';
+import TopNavigation from '@/components/TopNavigation.vue';
 import Courses from '@/components/Courses.vue';
+import Navbar from '@/components/Navbar.vue';
 import { ref, onMounted } from 'vue';
 
 // Определение типов для курса, соответствующее компоненту Courses.vue
@@ -11,7 +13,7 @@ interface Course {
   description: string;
   image: string;
   alt: string;
-  price: number;
+ formatted_price: number;
   slug: string;
 }
 
@@ -45,7 +47,7 @@ const fetchCourses = async () => {
       description: course.description,
       image: course.image,
       alt: course.alt,
-      price: course.price,
+      formatted_price: course.formatted_price,
       slug: course.slug
     }));
   } catch (error) {
@@ -61,46 +63,12 @@ onMounted(() => {
 </script>
 
 <template>
+    <Navbar :auth="props.auth"/>
+    <TopNavigation/>
  <Head title="Welcome">
  <meta name="description" content="Welcome to {{ props.name }} - the best platform for managing your tasks and projects" />
 </Head>
   <div class="min-h-screen bg-background">
-
-    <header class="bg-card shadow">
-      <div class="container mx-auto">
-        <nav class="flex justify-between items-center">
-          <div class="text-xl font-bold">
-            {{ props.name }}
-          </div>
-
-          <div class="flex space-x-4">
-            <Link
-              v-if="props.auth.user"
-              :href="dashboard()"
-              class="px-4 py-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-            >
-              Dashboard
-            </Link>
-
-            <template v-else>
-              <Link
-                :href="login()"
-                class="px-4 py-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-              >
-                Log in
-              </Link>
-
-              <Link
-                :href="register()"
-                class="px-4 py-2 rounded-md bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
-              >
-                Register
-              </Link>
-            </template>
-          </div>
-        </nav>
-      </div>
-    </header>
 
     <main class="container mx-auto">
        <div class="bg-neutral-100 py-8">

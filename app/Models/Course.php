@@ -33,6 +33,15 @@ class Course extends Model
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'formatted_price',
+    ];
+
+    /**
      * Get the price in rubles.
      *
      * @param  int  $value
@@ -52,5 +61,15 @@ class Course extends Model
     public function setPriceAttribute($value)
     {
         $this->attributes['price'] = $value * 100;
+    }
+
+    /**
+     * Get the formatted price in rubles.
+     *
+     * @return float
+     */
+    public function getFormattedPriceAttribute()
+    {
+        return $this->price / 100;
     }
 }

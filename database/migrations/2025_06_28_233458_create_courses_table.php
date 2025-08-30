@@ -17,7 +17,10 @@ return new class extends Migration
             $table->unsignedInteger('price'); // цена в копейках
             $table->string('slug')->unique();
             $table->string('meta_title')->nullable();
+            $table->string('page_header')->nullable();
+            $table->string('page_subheader')->nullable();
             $table->text('meta_description')->nullable();
+            $table->string('breadcrumbs')->nullable();
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ import { Link, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import { login, logout } from '@/routes';
 import { edit } from '@/routes/profile';
-import { Phone, Send, MessageCircle,SquareMenu } from 'lucide-vue-next';
+import { Phone, Send, MessageCircle, SquareMenu } from 'lucide-vue-next';
 
 // Mobile menu state
 const isMobileMenuOpen = ref(false);
@@ -40,7 +40,6 @@ const isNavItemActive = (item: NavItem) => {
     // For other routes, check if the current path starts with the item's href
     return currentPath.value.startsWith(item.href);
 };
-
 
 // Auth state
 const auth = computed(() => page.props.auth);
@@ -86,7 +85,7 @@ const auth = computed(() => page.props.auth);
                 <!-- Contact and Auth Links -->
                 <div class="flex-row items-center gap-3 hidden lg:flex">
                     <a
-                        class="flex h-10 items-center justify-center rounded-md w-10 text-white bg-rose-400 hover:opacity-80"
+                        class="flex h-10 w-10 items-center justify-center rounded-md text-white bg-gradient-to-r bg-rose-400 hover:opacity-80"
                         href="tel:+79219076449"
                         aria-label="Позвонить"
                     >
@@ -158,7 +157,7 @@ const auth = computed(() => page.props.auth);
 
                             <div class="flex w-full justify-center gap-5">
                                 <a
-                                class="flex h-12 w-12 items-center justify-center rounded-md text-white bg-rose-400"
+                                class="flex h-12 w-12 items-center justify-center rounded-md text-white bg-gradient-to-r bg-rose-400"
                                 href="tel:+79219076449"
                                 aria-label="Позвонить"
                             >

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { dashboard, login, register } from '@/routes';
 import { Head, Link } from '@inertiajs/vue3';
-import TopNavigation from '@/components/TopNavigation.vue';
+import Navbar from '@/components/Navbar.vue';
 import Courses from '@/components/Courses.vue';
 import { ref, onMounted } from 'vue';
 
@@ -63,7 +63,7 @@ onMounted(() => {
 
 <template>
     <!-- <Navbar :auth="props.auth"/> -->
-    <TopNavigation :auth="props.auth"/>
+    <Navbar :auth="props.auth"/>
  <Head title="Welcome">
  <meta name="description" content="Welcome to {{ props.name }} - the best platform for managing your tasks and projects" />
 </Head>

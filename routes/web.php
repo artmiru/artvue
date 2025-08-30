@@ -13,6 +13,10 @@ Route::get('/courses', function () {
     return Inertia::render('Courses', ['courses' => $courses->getData()]);
 })->name('courses');
 
+Route::get('/kursy-risovaniya', function () {
+    return Inertia::render('courses/Drawing');
+})->name('drawing');
+
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

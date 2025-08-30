@@ -35,7 +35,7 @@ const formatPrice = (price: number): string => {
 </script>
 
 <template>
-    <div id="courses" class="max-w-full block md:mx-5 lg:mx-5">
+    <div id="courses" class="lg:max-w-6xl m-auto">
       <div v-if="courses.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         <div
           v-for="course in courses"
@@ -43,9 +43,9 @@ const formatPrice = (price: number): string => {
           class="w-full flex"
         >
           <div class="border rounded bg-white shadow-md flex flex-col w-full border-neutral-300">
-            <h2 class="pt-3 pb-1 text-lg  md:text-xl lg:text-2xl font-medium px-3 text-center">{{ course.name }}</h2>
+            <h2 class="pt-3 pb-1 text-lg  md:text-xl lg:text-xl font-medium px-3 text-center">{{ course.name }}</h2>
 
-            <div class="photo flex-grow min-h-56">
+            <div class="photo">
               <img
                 class="max-w-full h-auto w-full border-t border-b object-cover"
                 :src="`/assets/img/main/${course.image}`"

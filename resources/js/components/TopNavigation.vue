@@ -4,7 +4,7 @@ import { Link, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import { login, logout } from '@/routes';
 import { edit } from '@/routes/profile';
-import { Phone, Send, MessageCircle } from 'lucide-vue-next';
+import { Phone, Send, MessageCircle,SquareMenu } from 'lucide-vue-next';
 
 // Mobile menu state
 const isMobileMenuOpen = ref(false);
@@ -55,40 +55,16 @@ const auth = computed(() => page.props.auth);
                     <Link class="flex items-end text-foreground no-underline" href="/">
                         <AppLogo class="me-1" />
                     </Link>
-
-                    <!-- Mobile menu button -->
+                </div>
+                   <!-- Mobile menu button -->
                     <button
                         @click="isMobileMenuOpen = !isMobileMenuOpen"
-                        class="ml-2 rounded-md p-2 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary lg:hidden"
+                        class="ml-2 p-2 text-gray-700 hover:bg-gray-100 focus:outline-none lg:hidden"
                         aria-expanded="false"
                     >
                         <span class="sr-only">Открыть меню</span>
-                        <!-- Hamburger icon -->
-                        <svg
-                            v-if="!isMobileMenuOpen"
-                            class="block h-6 w-6"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            aria-hidden="true"
-                        >
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        <!-- Close icon -->
-                        <svg
-                            v-else
-                            class="block h-6 w-6"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            aria-hidden="true"
-                        >
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                        <SquareMenu class="block h-9 w-9" />
                     </button>
-                </div>
 
                 <!-- Main Navigation Links -->
                 <ul class="hidden flex-row lg:flex">
@@ -110,7 +86,7 @@ const auth = computed(() => page.props.auth);
                 <!-- Contact and Auth Links -->
                 <div class="flex-row items-center gap-3 hidden lg:flex">
                     <a
-                        class="flex h-10 items-center justify-center rounded-md w-10 text-white bg-fuchsia-600 hover:opacity-80"
+                        class="flex h-10 items-center justify-center rounded-md w-10 text-white bg-rose-400 hover:opacity-80"
                         href="tel:+79219076449"
                         aria-label="Позвонить"
                     >
@@ -150,15 +126,22 @@ const auth = computed(() => page.props.auth);
                     </template>
                 </div>
 
+                <!-- Mobile menu overlay -->
+                <div
+                    v-show="isMobileMenuOpen"
+                    class="fixed inset-0 z-40 bg-black/50 lg:hidden"
+                    @click="isMobileMenuOpen = false"
+                ></div>
+
                 <!-- Mobile menu -->
-                <div v-show="isMobileMenuOpen" class="absolute inset-x-0 top-14 z-50 origin-top-right transform rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 lg:hidden">
+                <div v-show="isMobileMenuOpen" class="absolute right-0 z-50 w-10/12 overflow-y-auto bg-white shadow-md lg:hidden border border-neutral-200 rounded-b-md -mt-1 top-14">
                     <div class="space-y-1 px-2 pb-3 pt-2">
                         <Link
                             v-for="item in navItems"
                             :key="item.routeName"
                             :href="item.href"
                             :class="[
-                                'block rounded-md px-3 py-2 text-base font-medium',
+                                'block rounded-md px-3 py-2 text-base font-medium border-2 border-neutral-200',
                                 isNavItemActive(item)
                                     ? 'bg-primary text-white'
                                     : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
@@ -172,31 +155,32 @@ const auth = computed(() => page.props.auth);
                     <!-- Mobile contact and auth links -->
                     <div class="border-t border-gray-200 px-2 pb-3 pt-4">
                         <div class="flex flex-col gap-3">
-                            <a
-                                class="flex h-12 w-12 items-center justify-center rounded-md border border-primary text-primary hover:bg-primary hover:text-white"
+
+                            <div class="flex w-full justify-center gap-5">
+                                <a
+                                class="flex h-12 w-12 items-center justify-center rounded-md text-white bg-rose-400"
                                 href="tel:+79219076449"
                                 aria-label="Позвонить"
                             >
-                                <Phone class="h-6 w-6" />
+                                <Phone class="h-8 w-8" />
                             </a>
-                            <div class="flex w-full justify-center gap-3">
-                                <a
-                                    class="flex h-12 w-12 items-center justify-center rounded-md bg-primary bg-gradient-to-r text-white hover:opacity-90"
+                            <a
+                                    class="flex h-12 w-12 items-center justify-center rounded-md from-blue-500 to-blue-600 bg-gradient-to-r text-white"
                                     href="https://t.me/artmir_zven"
                                     target="_blank"
                                     aria-label="Написать в Telegram"
                                     rel="noopener noreferrer"
                                 >
-                                    <Send class="h-6 w-6" />
+                                    <Send class="h-8 w-8" />
                                 </a>
                                 <a
-                                    class="flex h-12 w-12 items-center justify-center rounded-md from-green-500 to-green-600 bg-gradient-to-r text-white hover:opacity-90"
+                                    class="flex h-12 w-12 items-center justify-center rounded-md from-green-500 to-green-600 bg-gradient-to-r text-white"
                                     href="https://wa.me/+79219076449"
                                     target="_blank"
                                     aria-label="Написать в WhatsApp"
                                     rel="noopener noreferrer"
                                 >
-                                    <MessageCircle class="h-6 w-6" />
+                                    <MessageCircle class="h-8 w-8" />
                                 </a>
                             </div>
 
@@ -211,7 +195,7 @@ const auth = computed(() => page.props.auth);
                                 </div>
                             </template>
                             <template v-else>
-                                <Link class="w-full rounded-md border-secondary px-4 py-3 text-center text-secondary hover:bg-secondary hover:text-white" :href="login()">
+                                <Link class="w-full rounded-md border-secondary px-4 py-3 text-center bg-yellow-300" :href="login()">
                                     Войти
                                 </Link>
                             </template>

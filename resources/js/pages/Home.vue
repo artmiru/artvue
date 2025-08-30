@@ -3,7 +3,6 @@ import { dashboard, login, register } from '@/routes';
 import { Head, Link } from '@inertiajs/vue3';
 import TopNavigation from '@/components/TopNavigation.vue';
 import Courses from '@/components/Courses.vue';
-import Navbar from '@/components/Navbar.vue';
 import { ref, onMounted } from 'vue';
 
 // Определение типов для курса, соответствующее компоненту Courses.vue
@@ -71,8 +70,8 @@ onMounted(() => {
   <div class="min-h-screen bg-background">
 
     <main class="container mx-auto">
-       <div class="bg-neutral-100 py-8">
-        <h1 class="text-center text-2xl sm:text-3xl md:text-5xl mb-8 font-medium leading-snug">Художественные курсы для взрослых<br> в Санкт-Петербурге</h1>
+       <div class="bg-neutral-50 py-8">
+        <h1 class="text-center text-3xl md:text-5xl mb-8 font-medium leading-snug">Художественные курсы для взрослых<br> в Санкт-Петербурге</h1>
         <Courses :courses="courses" />
       </div>
     </main>

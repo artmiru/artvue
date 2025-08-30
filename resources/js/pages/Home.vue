@@ -63,8 +63,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <Navbar :auth="props.auth"/>
-    <TopNavigation/>
+    <!-- <Navbar :auth="props.auth"/> -->
+    <TopNavigation :auth="props.auth"/>
  <Head title="Welcome">
  <meta name="description" content="Welcome to {{ props.name }} - the best platform for managing your tasks and projects" />
 </Head>

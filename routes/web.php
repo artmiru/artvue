@@ -49,7 +49,7 @@ Route::get('/{slug}', function ($slug) {
 })->where('slug', '^(?!api|settings|dashboard|login|register|forgot-password|reset-password|confirm-password|verify-email|up|storage).*$');
 
 Route::get('/kursy-risovaniya', function () {
-    return Inertia::render('courses/Drawing');
+    return Inertia::render('courses/Show', ['slug' => 'kursy-risovaniya']);
 })->name('drawing');
 
 Route::get('dashboard', function () {

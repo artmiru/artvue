@@ -29,9 +29,15 @@ class MasterClassController extends Controller
         $masterClasses = $eventsByMasterClass->map(function ($events, $masterClassId) {
             $masterClass = $events->first()->masterClass;
             $nextEventDate = $events->first()->start_datetime;
+            $bookedCount = $events->first()->booked_count;
+            $maxParticipants = $events->first()->max_participants;
             
             // Добавляем информацию о ближайшей дате к данным мастер-класса
             $masterClass->next_event_date = $nextEventDate;
+            
+            // Добавляем информацию о забронированных местах из события
+            $masterClass->booked_places = $bookedCount;
+            $masterClass->max_participants = $maxParticipants;
             
             // Добавляем отформатированную цену
             $masterClass->formatted_price = $masterClass->formatted_price;

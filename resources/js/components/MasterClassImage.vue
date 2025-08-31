@@ -38,7 +38,7 @@ const handleImageError = () => {
 
 <template>
   <div
-    class="aspect-w-4 aspect-h-3 overflow-hidden bg-gray-100 flex items-center justify-center"
+    class="aspect-w-4 aspect-h-3 overflow-hidden bg-white flex items-center justify-center"
     :class="{ 'bg-gray-50': !imageLoaded }"
   >
     <img

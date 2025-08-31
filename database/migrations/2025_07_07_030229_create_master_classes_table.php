@@ -15,7 +15,6 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->unsignedInteger('price')->default(290000); // в копейках
-            $table->unsignedInteger('booked_places')->default(0);
 
             // Медиа
             $table->string('image_path')->nullable();

@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import Navbar from '@/components/Navbar.vue';
 import { Button } from '@/components/ui/button';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import MasterClassImage from '@/components/MasterClassImage.vue';
+import AvailablePlaces from '@/components/AvailablePlaces.vue';
 
 // Интерфейс для мастер-класса
 interface MasterClass {
@@ -60,9 +61,9 @@ const breadcrumbs = [
 </script>
 
 <template>
-  <div class="min-h-screen bg-background">
+  <div class="min-h-screen bg-neutral-50">
     <Navbar />
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-6 lg:w-fit lg:m-auto py-0.5" />
+    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-6 hidden lg:block lg:w-fit lg:m-auto py-0.5" />
 
     <!-- Состояние загрузки -->
     <div v-if="loading" class="container mx-auto px-4 py-8 text-center">
@@ -76,28 +77,31 @@ const breadcrumbs = [
     </div>
 
     <!-- Список мастер-классов -->
-    <div v-else class="container lg:w-10/12 mx-auto">
+    <div v-else class="container mx-auto">
       <Head title="Мастер-классы" />
-
       <!-- Заголовок -->
-      <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold text-neutral-900 mb-4">
-          Наши мастер-классы
+      <div class="text-center text-white bg-gray-700 mb-12 py-12">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">
+          Мастер-класс по рисованию в СПб:<br> живопись маслом
         </h1>
-        <p class="text-xl text-neutral-700 max-w-3xl mx-auto">
-          Присоединяйтесь к нашим мастер-классам и получите новые навыки под руководством опытных преподавателей
+        <p class="text-3xl max-w-3xl mx-auto mb-5">
+          Нарисуйте свою картину за 3 часа, даже если вы никогда не держали в руках кисть
         </p>
+        <p class="text-xl">Холст, краски и кисти — всё включено</p>
+        <p class="text-6xl font-bold py-3">2 900 ₽</p>
+        <p class="text-sm">Заберёте готовую картину домой <br />
+Студия у м. Звенигородская • Группы до 8 человек</p>
       </div>
 
       <!-- Список мастер-классов -->
-      <div v-if="masterClasses.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div v-if="masterClasses.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full lg:w-10/12 mx-auto">
         <div
           v-for="masterClass in masterClasses"
           :key="masterClass.id"
-          class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col"
-          style="height: 450px;"
+          class="bg-white lg:rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col border border-neutral-200"
+          style="height: 440px;"
         >
-          <Link :href="`/mk/${masterClass.slug}`" class="flex flex-col h-full">
+          <div class="flex flex-col h-full">
             <!-- Изображение мастер-класса -->
             <MasterClassImage
               :image-path="masterClass.image_path"
@@ -106,41 +110,35 @@ const breadcrumbs = [
 
             <!-- Информация о мастер-классе -->
             <div class="p-6 flex flex-col flex-grow">
-              <h2 class="text-xl font-semibold text-neutral-900 mb-2">{{ masterClass.title }}</h2>
-
+              <h2 class="text-xl font-semibold text-neutral-900 text-center">&laquo;{{ masterClass.title }}&raquo;</h2>
               <!-- Дата ближайшего события -->
-              <div class="mb-2">
-                <span class="text-sm text-neutral-600">
+                <div class="text-lg text-neutral-600 text-center">
                   {{ masterClass.formatted_next_event_date }}
-                </span>
-              </div>
-
-              <div class="flex justify-between items-center mb-4">
-                <span class="text-2xl font-bold text-red-500">{{ masterClass.formatted_price }}</span>
-                <span class="text-neutral-500">за участие</span>
-              </div>
-
+                </div>
               <!-- Информация о местах -->
-              <div class="mb-4 flex-grow">
-                <div class="flex justify-between mb-1">
-                  <span class="text-neutral-700 text-sm">Свободных мест:</span>
-                  <span class="text-sm font-semibold">{{ masterClass.max_participants - masterClass.booked_places }} из {{ masterClass.max_participants }}</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-2">
-                  <div
-                    class="bg-red-500 h-2 rounded-full"
-                    :style="{ width: `${((masterClass.max_participants - masterClass.booked_places) / masterClass.max_participants) * 100}%` }"
-                  ></div>
-                </div>
-              </div>
+              <AvailablePlaces
+                :max-participants="masterClass.max_participants"
+                :booked-places="masterClass.booked_places"
+              />
 
               <div class="mt-auto">
-                <Button class="w-full bg-red-500 hover:bg-red-600 text-white">
-                  Подробнее
+                <Link v-if="masterClass.max_participants - masterClass.booked_places > 0" :href="`/mk/${masterClass.slug}`">
+                  <Button
+                    class="w-full text-white text-xl lg:text-lg cursor-pointer bg-red-400 hover:bg-red-600"
+                  >
+                    Записаться
+                  </Button>
+                </Link>
+                <Button
+                  v-else
+                  class="w-full text-white text-lg bg-gray-400 cursor-not-allowed"
+                  disabled
+                >
+                  Мест нет
                 </Button>
               </div>
             </div>
-          </Link>
+          </div>
         </div>
       </div>
 

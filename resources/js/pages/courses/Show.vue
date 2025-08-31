@@ -71,6 +71,12 @@ const breadcrumbs = computed(() => [
   { title: 'Главная', href: '/' },
   { title: course.value?.breadcrumbs || 'Курс' }
 ]);
+
+// Обработанный заголовок страницы с обернутой фразой "в Санкт-Петербурге"
+const processedPageHeader = computed(() => {
+  const header = course.value?.page_header || course.value?.name || '';
+  return header.replace(/(в Санкт-Петербурге)/g, '<span class="whitespace-nowrap">$1</span>');
+});
 </script>
 
 <template>
@@ -95,17 +101,14 @@ const breadcrumbs = computed(() => [
     <div v-else-if="course" class="container mx-auto px-4 py-8">
       <Head :title="course.meta_title || course.name" />
 
-
-
       <!-- Заголовок и подзаголовок -->
-      <div class="text-center mb-12 m-auto">
-        <h1 class="text-4xl md:text-5xl font-bold text-neutral-900 mb-5">
-          {{ course.page_header || course.name }}
-        </h1>
-        <p class="text-2xl text-neutral-700 max-w-3xl mx-auto w-10/12">
-          {{ course.page_subheader || course.description }}
-        </p>
-      </div>
+            <div class="text-center mb-12 max-w-4xl mx-auto">
+              <h1 class="text-3xl lg:text-5xl font-bold text-neutral-900 mb-5 leading-tight" v-html="processedPageHeader">
+              </h1>
+              <p class="text-2xl text-neutral-700 mx-auto">
+                {{ course.page_subheader || course.description }}
+              </p>
+            </div>
 
       <!-- Основной контент курса -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">

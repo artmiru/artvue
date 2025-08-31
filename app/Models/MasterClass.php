@@ -36,4 +36,66 @@ class MasterClass extends Model
         'is_active' => 'boolean',
         'tags' => 'array',
     ];
+
+    /**
+     * Get the price in rubles.
+     *
+     * @param  int  $value
+     * @return float
+     */
+    public function getPriceAttribute($value)
+    {
+        return $value / 100;
+    }
+
+    /**
+     * Get the formatted price in rubles.
+     *
+     * @return string
+     */
+    public function getFormattedPriceAttribute()
+    {
+        // Если цена целая (без копеек), не показываем .00
+        if (floor($this->price) == $this->price) {
+            return number_format($this->price, 0, '.', ' ') . ' ₽';
+        } else {
+            return number_format($this->price, 2, '.', ' ') . ' ₽';
+        }
+    }
+
+    /**
+     * Get the formatted next event date.
+     *
+     * @return string|null
+     */
+    public function getFormattedNextEventDateAttribute()
+    {
+        if (!isset($this->next_event_date)) {
+            return null;
+        }
+
+        $date = new \DateTime($this->next_event_date);
+        
+        // День месяца
+        $day = $date->format('j');
+        
+        // Сокращенные названия месяцев на русском
+        $months = [
+            'янв.', 'февр.', 'мар.', 'апр.', 'мая', 'июн.',
+            'июл.', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.'
+        ];
+        $month = $months[$date->format('n') - 1];
+        
+        // Время в формате ЧЧ:ММ
+        $time = $date->format('H:i');
+        
+        // Дни недели на русском
+        $weekdays = [
+            'воскресенье', 'понедельник', 'вторник', 'среда',
+            'четверг', 'пятница', 'суббота'
+        ];
+        $weekday = $weekdays[$date->format('w')];
+        
+        return "{$day} {$month} в {$time} ({$weekday})";
+    }
 }

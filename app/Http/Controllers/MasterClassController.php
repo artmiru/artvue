@@ -14,7 +14,34 @@ class MasterClassController extends Controller
      */
     public function index()
     {
-        $masterClasses = MasterClass::all();
+        // Получаем ближайшие события расписания (на ближайшие 30 дней)
+        $upcomingEvents = \App\Models\ScheduleEvent::with(['masterClass'])
+            ->where('start_datetime', '>=', now())
+            ->where('start_datetime', '<=', now()->addDays(30))
+            ->whereHas('masterClass') // Только события с привязанным мастер-классом
+            ->orderBy('start_datetime', 'asc')
+            ->get();
+        
+        // Группируем события по мастер-классам
+        $eventsByMasterClass = $upcomingEvents->groupBy('master_class_id');
+        
+        // Извлекаем уникальные мастер-классы и добавляем информацию о ближайшей дате
+        $masterClasses = $eventsByMasterClass->map(function ($events, $masterClassId) {
+            $masterClass = $events->first()->masterClass;
+            $nextEventDate = $events->first()->start_datetime;
+            
+            // Добавляем информацию о ближайшей дате к данным мастер-класса
+            $masterClass->next_event_date = $nextEventDate;
+            
+            // Добавляем отформатированную цену
+            $masterClass->formatted_price = $masterClass->formatted_price;
+            
+            // Добавляем отформатированную дату
+            $masterClass->formatted_next_event_date = $masterClass->formatted_next_event_date;
+            
+            return $masterClass;
+        })->values();
+        
         return response()->json($masterClasses);
     }
 

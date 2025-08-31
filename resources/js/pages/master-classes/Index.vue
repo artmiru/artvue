@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import MasterClassImage from '@/components/MasterClassImage.vue';
 import AvailablePlaces from '@/components/AvailablePlaces.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
 // Интерфейс для мастер-класса
 interface MasterClass {
@@ -67,7 +68,7 @@ const breadcrumbs = [
 
     <!-- Состояние загрузки -->
     <div v-if="loading" class="container mx-auto px-4 py-8 text-center">
-      <p class="text-xl text-neutral-700">Загрузка мастер-классов...</p>
+      <LoadingSpinner text="Загрузка мастер-классов..." color="red" size="md" />
     </div>
 
     <!-- Ошибка -->

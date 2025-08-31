@@ -4,6 +4,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import Navbar from '@/components/Navbar.vue';
 import { Button } from '@/components/ui/button';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
 // Интерфейс для курса
 interface Course {
@@ -79,7 +80,7 @@ const breadcrumbs = computed(() => [
     <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-6 lg:w-fit lg:m-auto py-0.5" />
     <!-- Состояние загрузки -->
     <div v-if="loading" class="container mx-auto px-4 py-8 text-center">
-      <p class="text-xl text-neutral-700">Загрузка курса...</p>
+      <LoadingSpinner text="Загрузка курса..." color="red" size="md" />
     </div>
 
     <!-- Ошибка -->

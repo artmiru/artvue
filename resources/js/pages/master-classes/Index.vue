@@ -64,7 +64,7 @@ const breadcrumbs = [
 <template>
   <div class="min-h-screen bg-neutral-50">
     <Navbar />
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-6 hidden lg:block lg:w-fit lg:m-auto py-0.5" />
+    <Breadcrumbs :breadcrumbs="breadcrumbs" class="m-auto py-0.5 w-fit" />
 
     <!-- Состояние загрузки -->
     <div v-if="loading" class="container mx-auto px-4 py-8 text-center">

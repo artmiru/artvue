@@ -98,11 +98,11 @@ const breadcrumbs = computed(() => [
 
 
       <!-- Заголовок и подзаголовок -->
-      <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold text-neutral-900 mb-4">
+      <div class="text-center mb-12 m-auto">
+        <h1 class="text-4xl md:text-5xl font-bold text-neutral-900 mb-5">
           {{ course.page_header || course.name }}
         </h1>
-        <p class="text-xl text-neutral-700 max-w-3xl mx-auto">
+        <p class="text-2xl text-neutral-700 max-w-3xl mx-auto w-10/12">
           {{ course.page_subheader || course.description }}
         </p>
       </div>

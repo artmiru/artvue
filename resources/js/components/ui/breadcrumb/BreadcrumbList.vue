@@ -10,7 +10,7 @@ const props = defineProps<{
 <template>
   <ol
     data-slot="breadcrumb-list"
-    :class="cn('text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm break-words sm:gap-2.5 lg:bg-neutral-50 lg:px-3 lg:text-xs lg:rounded', props.class)"
+    :class="cn('text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm break-words gap-2.5 bg-neutral-50 px-3 text-xs rounded-b', props.class)"
   >
     <slot />
   </ol>

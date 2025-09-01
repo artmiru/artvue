@@ -1,6 +1,8 @@
 import '../css/app.css';
+import '@fancyapps/ui/dist/fancybox/fancybox.css';
 
 import { createInertiaApp } from '@inertiajs/vue3';
+import { Fancybox } from '@fancyapps/ui';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
@@ -14,6 +16,14 @@ createInertiaApp({
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .mount(el);
+        
+        // Инициализация Fancybox
+        Fancybox.bind('[data-fancybox]', {
+            Carousel: {
+                Thumbs: false,
+                Toolbar: false,
+            },
+        });
     },
     progress: {
         color: '#4B5563',

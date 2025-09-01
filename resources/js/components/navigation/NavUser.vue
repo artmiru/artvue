@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import UserInfo from '@/components/UserInfo.vue';
+import UserInfo from '@/components/user/UserInfo.vue';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { usePage } from '@inertiajs/vue3';
 import { ChevronsUpDown } from 'lucide-vue-next';
-import UserMenuContent from './UserMenuContent.vue';
+import UserMenuContent from '@/components/user/UserMenuContent.vue';
 
 const page = usePage();
 const user = page.props.auth.user;

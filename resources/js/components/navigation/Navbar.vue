@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppLogo from '@/components/AppLogo.vue';
+import AppLogo from '@/components/common/AppLogo.vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import { login, logout } from '@/routes';

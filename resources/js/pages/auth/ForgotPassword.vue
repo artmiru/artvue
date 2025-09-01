@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PasswordResetLinkController from '@/actions/App/Http/Controllers/Auth/PasswordResetLinkController';
-import InputError from '@/components/InputError.vue';
-import TextLink from '@/components/TextLink.vue';
+import InputError from '@/components/common/InputError.vue';
+import TextLink from '@/components/common/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';

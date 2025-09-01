@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
-import Navbar from '@/components/Navbar.vue';
-import Courses from '@/components/Courses.vue';
-import TeachersSection from '@/components/TeachersSection.vue';
+import Navbar from '@/components/navigation/Navbar.vue';
+import Courses from '@/components/courses/Courses.vue';
+import TeachersSection from '@/components/courses/TeachersSection.vue';
 import { ref, onMounted } from 'vue';
 
 // Определение типов для курса, соответствующее компоненту Courses.vue

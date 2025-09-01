@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UserInfo from '@/components/UserInfo.vue';
+import UserInfo from '@/components/user/UserInfo.vue';
 import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { logout } from '@/routes';
 import { edit } from '@/routes/profile';

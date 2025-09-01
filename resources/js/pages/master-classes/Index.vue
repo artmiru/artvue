@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
-import Navbar from '@/components/Navbar.vue';
+import Navbar from '@/components/navigation/Navbar.vue';
 import { Button } from '@/components/ui/button';
-import Breadcrumbs from '@/components/Breadcrumbs.vue';
-import MasterClassImage from '@/components/MasterClassImage.vue';
-import AvailablePlaces from '@/components/AvailablePlaces.vue';
-import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import Breadcrumbs from '@/components/navigation/Breadcrumbs.vue';
+import MasterClassImage from '@/components/master-classes/MasterClassImage.vue';
+import AvailablePlaces from '@/components/courses/AvailablePlaces.vue';
+import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
 
 // Интерфейс для мастер-класса
 interface MasterClass {

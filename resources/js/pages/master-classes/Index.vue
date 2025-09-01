@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import Navbar from '@/components/Navbar.vue';
 import { Button } from '@/components/ui/button';

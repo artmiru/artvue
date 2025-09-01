@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, type PropType } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { getInitials } from '@/composables/useInitials'
@@ -30,11 +29,12 @@ interface Teacher {
 }
 
 // Define component props with detailed typing
-const props = defineProps({
-  teachers: {
-    type: Array as PropType<Teacher[]>,
-    default: () => []
-  }
+interface Props {
+  teachers?: Teacher[]
+}
+
+withDefaults(defineProps<Props>(), {
+  teachers: () => []
 })
 
 // Define component emits with detailed typing

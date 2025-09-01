@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { dashboard, login, register } from '@/routes';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import Navbar from '@/components/Navbar.vue';
 import Courses from '@/components/Courses.vue';
 import TeachersSection from '@/components/TeachersSection.vue';

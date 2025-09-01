@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 
 // Props
-const props = defineProps({
-  imagePath: {
-    type: String,
-    required: true
-  },
-  alt: {
-    type: String,
-    default: ''
-  }
-});
+interface Props {
+  imagePath: string
+  alt?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  alt: ''
+})
 
 // Reactive data
-const isVertical = ref(false);
-const imageLoaded = ref(false);
+const isVertical = ref(false)
+const imageLoaded = ref(false)
+
+// Computed values to ensure props are used
+const imagePathComputed = computed(() => props.imagePath)
+const altComputed = computed(() => props.alt)
 
 // Определяем ориентацию изображения динамически
 const determineOrientation = (img: HTMLImageElement) => {
@@ -42,8 +44,8 @@ const handleImageError = () => {
     :class="{ 'bg-gray-50': !imageLoaded }"
   >
     <img
-      :src="`/assets/img/mk/oil/thumbs/${imagePath}.webp`"
-      :alt="alt"
+      :src="`/assets/img/mk/oil/thumbs/${imagePathComputed}.webp`"
+      :alt="altComputed"
       :class="[
         'transition-opacity duration-300',
         {

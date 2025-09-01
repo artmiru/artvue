@@ -3,6 +3,7 @@ import { dashboard, login, register } from '@/routes';
 import { Head, Link } from '@inertiajs/vue3';
 import Navbar from '@/components/Navbar.vue';
 import Courses from '@/components/Courses.vue';
+import TeachersSection from '@/components/TeachersSection.vue';
 import { ref, onMounted } from 'vue';
 
 // Определение типов для курса, соответствующее компоненту Courses.vue
@@ -16,18 +17,45 @@ interface Course {
   slug: string;
 }
 
+// Определение типов для учителя
+interface Teacher {
+  id: number;
+  user_id: number;
+  about: string;
+  phone: string;
+  folder: string;
+ alt: string | null;
+  keypass_code: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  user: {
+    id: number;
+    first_name: string;
+    last_name: string | null;
+    middle_name: string | null;
+    phone: string;
+    email: string | null;
+    role: string;
+    created_at: string;
+    updated_at: string;
+  };
+}
+
 // Определение типов для props
 interface Props {
   auth?: {
     user?: object | null;
   };
   name?: string;
+  teachers?: Teacher[];
 }
 
 // Получение props с дефолтными значениями
 const props = withDefaults(defineProps<Props>(), {
   auth: () => ({ user: null }),
-  name: undefined
+  name: undefined,
+  teachers: () => []
 });
 
 // Реактивная переменная для хранения курсов
@@ -74,6 +102,7 @@ onMounted(() => {
         <h1 class="text-center text-3xl md:text-5xl mb-8 font-medium leading-snug">Художественные курсы для взрослых<br> в Санкт-Петербурге</h1>
         <Courses :courses="courses" />
       </div>
+      <TeachersSection :teachers="props.teachers" />
     </main>
   </div>
 </template>

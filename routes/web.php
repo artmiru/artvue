@@ -6,10 +6,9 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\MasterClassController;
 use App\Http\Controllers\GiftCertificateController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return Inertia::render('Home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Routes for courses
 Route::get('/courses/{slug}', function ($slug) {
@@ -61,6 +60,7 @@ Route::get('/api/courses', [CourseController::class, 'index'])->name('api.course
 Route::get('/api/master-classes', [MasterClassController::class, 'index'])->name('api.master-classes.index');
 Route::get('/api/gift-certificates', [GiftCertificateController::class, 'index'])->name('api.gift-certificates.index');
 Route::get('/api/products', [ProductController::class, 'index'])->name('api.products.index');
+Route::get('/api/teachers', [\App\Http\Controllers\TeacherController::class, 'index'])->name('api.teachers.index');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

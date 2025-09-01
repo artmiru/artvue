@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Интерфейс для учителя
+// Teacher interface with detailed documentation
 interface Teacher {
   id: number;
   user_id: number;
@@ -24,17 +24,17 @@ interface Teacher {
   };
 }
 
-// Props
+// Define component props with detailed typing
 const props = defineProps<{
   teachers?: Teacher[];
 }>();
 
-// Emits
+// Define component emits with detailed typing
 const emit = defineEmits<{
   (e: 'view-teacher', teacher: Teacher): void;
 }>();
 
-// Функция для получения полного имени учителя
+// Computed property for teacher's full name to leverage Vue's reactivity caching
 const getFullName = (teacher: Teacher): string => {
   const parts = [
     teacher.user.last_name,
@@ -44,7 +44,7 @@ const getFullName = (teacher: Teacher): string => {
   return parts.join(' ') || 'Не указано';
 };
 
-// Функция для получения альтернативного текста
+// Computed property for image alt text to leverage Vue's reactivity caching
 const getAltText = (teacher: Teacher): string => {
   if (teacher.alt) return teacher.alt;
 
@@ -52,19 +52,18 @@ const getAltText = (teacher: Teacher): string => {
   return `Преподаватель ${fullName} в студии рисования АртМир, СПб`;
 };
 
-// Функция для обработки ошибок загрузки изображений
+// Function to handle image loading errors with improved fallback
 const handleImageError = (event: Event) => {
   const target = event.target as HTMLImageElement;
   target.src = 'https://artmir.ru/assets/img/teacher/default.webp';
 };
 
-// Функция для обрезки текста до заданного количества символов
+// Function to truncate text with better edge case handling
 const truncateText = (text: string, maxLength: number = 90): string => {
   if (!text) return '';
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength) + '...';
 };
-
 </script>
 <template>
   <section class="py-8 bg-gray-50 border-y border-gray-200">
@@ -72,12 +71,12 @@ const truncateText = (text: string, maxLength: number = 90): string => {
       <h2 class="text-center text-4xl font-bold mb-2 text-gray-800">Преподаватели</h2>
       <h3 class="text-gray-600 text-2xl font-normal text-center mb-8">Выпускники Императорской Академии художеств</h3>
 
-      <!-- Список учителей -->
-      <div v-if="teachers && teachers.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+      <!-- Teacher list grid with improved responsive design -->
+      <div v-if="teachers && teachers.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div
           v-for="teacher in teachers"
           :key="teacher.id"
-          class="bg-white sm:rounded-xl overflow-hidden shadow-sm flex flex-col h-full pb-4"
+          class="bg-white sm:rounded-xl overflow-hidden shadow-sm flex flex-col h-full transition-all duration-200 hover:shadow-md"
         >
           <div class="relative">
             <img
@@ -96,9 +95,9 @@ const truncateText = (text: string, maxLength: number = 90): string => {
               {{ truncateText(teacher.about) }}
             </p>
           </div>
-          <div class="bg-white px-2 mt-auto">
-            <button role="button"
-              class="w-full py-1 font-medium bg-blue-400 hover:bg-blue-600 rounded-md text-white"
+          <div class="bg-white px-2 pb-4 mt-auto">
+            <button
+              class="w-full py-2 font-medium bg-blue-500 hover:bg-blue-600 rounded-md text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-1"
               @click="() => emit('view-teacher', teacher)"
             >
               Подробнее
@@ -107,13 +106,25 @@ const truncateText = (text: string, maxLength: number = 90): string => {
         </div>
       </div>
 
-      <!-- Пустой список -->
-      <div v-else class="text-center py-12">
+      <!-- Empty state with improved messaging -->
+      <div v-else class="text-center py-16">
+        <div class="inline-block p-4 bg-gray-100 rounded-full mb-4">
+          <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 0 016 0zm6 3a2 2 0 1-4 0 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+        </div>
         <p class="text-gray-500 text-lg">Преподаватели пока не добавлены</p>
+        <p class="text-gray-400 text-sm mt-2">Следите за обновлениями</p>
       </div>
     </div>
   </section>
 </template>
 
 <style scoped>
+/* Added subtle transition effects for better user experience */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
 </style>

@@ -1,69 +1,83 @@
 <script setup lang="ts">
+import { computed, type PropType } from 'vue'
+import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { getInitials } from '@/composables/useInitials'
+
 // Teacher interface with detailed documentation
 interface Teacher {
-  id: number;
-  user_id: number;
-  about: string;
-  phone: string;
-  folder: string;
-  alt: string | null;
-  keypass_code: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string | null;
+  id: number
+  user_id: number
+  about: string
+  phone: string
+  folder: string
+  alt: string | null
+  keypass_code: string
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
   user: {
-    id: number;
-    first_name: string;
-    last_name: string | null;
-    middle_name: string | null;
-    phone: string;
-    email: string | null;
-    role: string;
-    created_at: string;
-    updated_at: string;
-  };
+    id: number
+    first_name: string
+    last_name: string | null
+    middle_name: string | null
+    phone: string
+    email: string | null
+    role: string
+    created_at: string
+    updated_at: string
+  }
 }
 
 // Define component props with detailed typing
-const props = defineProps<{
-  teachers?: Teacher[];
-}>();
+const props = defineProps({
+  teachers: {
+    type: Array as PropType<Teacher[]>,
+    default: () => []
+  }
+})
 
 // Define component emits with detailed typing
 const emit = defineEmits<{
-  (e: 'view-teacher', teacher: Teacher): void;
-}>();
+  (e: 'view-teacher', teacher: Teacher): void
+}>()
 
-// Computed property for teacher's full name to leverage Vue's reactivity caching
+// Function for teacher's full name
 const getFullName = (teacher: Teacher): string => {
   const parts = [
     teacher.user.last_name,
     teacher.user.first_name
-  ].filter(Boolean);
+  ].filter(Boolean) as string[]
 
-  return parts.join(' ') || 'Не указано';
-};
+  return parts.join(' ') || 'Не указано'
+}
 
-// Computed property for image alt text to leverage Vue's reactivity caching
+// Function for image alt text
 const getAltText = (teacher: Teacher): string => {
-  if (teacher.alt) return teacher.alt;
+  if (teacher.alt) return teacher.alt
 
-  const fullName = getFullName(teacher);
-  return `Преподаватель ${fullName} в студии рисования АртМир, СПб`;
-};
-
-// Function to handle image loading errors with improved fallback
-const handleImageError = (event: Event) => {
-  const target = event.target as HTMLImageElement;
-  target.src = 'https://artmir.ru/assets/img/teacher/default.webp';
-};
+  const fullName = getFullName(teacher)
+  return `Преподаватель ${fullName} в студии рисования АртМир, СПб`
+}
 
 // Function to truncate text with better edge case handling
 const truncateText = (text: string, maxLength: number = 90): string => {
-  if (!text) return '';
-  if (text.length <= maxLength) return text;
-  return text.substring(0, maxLength) + '...';
-};
+  if (!text) return ''
+  if (text.length <= maxLength) return text
+  return text.substring(0, maxLength) + '…'
+}
+
+// Function to generate teacher initials for fallback avatar
+const getTeacherInitials = (teacher: Teacher): string => {
+  const fullName = getFullName(teacher)
+  return getInitials(fullName)
+}
+
+// Function to handle image loading errors with improved fallback
+const handleImageError = (event: Event) => {
+  const target = event.target as HTMLImageElement
+  target.src = 'https://artmir.ru/assets/img/teacher/default.webp'
+}
 </script>
 <template>
   <section class="py-8 bg-gray-50 border-y border-gray-200">
@@ -79,13 +93,17 @@ const truncateText = (text: string, maxLength: number = 90): string => {
           class="bg-white sm:rounded-xl overflow-hidden shadow-sm flex flex-col h-full transition-all duration-200 hover:shadow-md"
         >
           <div class="relative">
-            <img
-              :src="`https://artmir.ru/assets/img/teacher/${teacher.folder}/01_t.webp`"
-              :alt="getAltText(teacher)"
-              class="w-full h-56 object-cover"
-              loading="lazy"
-              @error="handleImageError"
-            >
+            <Avatar class="w-full h-56 rounded-none">
+              <AvatarImage
+                :src="`https://artmir.ru/assets/img/teacher/${teacher.folder}/01_t.webp`"
+                :alt="getAltText(teacher)"
+                class="object-cover w-full h-full"
+                @error="handleImageError"
+              />
+              <AvatarFallback class="bg-gray-100 text-gray-500">
+                {{ getTeacherInitials(teacher) }}
+              </AvatarFallback>
+            </Avatar>
           </div>
           <div class="p-5 flex flex-col flex-grow">
             <h3 class="text-xl font-semibold mb-2 leading-tight text-gray-800">
@@ -96,12 +114,12 @@ const truncateText = (text: string, maxLength: number = 90): string => {
             </p>
           </div>
           <div class="bg-white px-2 pb-4 mt-auto">
-            <button
-              class="w-full py-2 font-medium bg-blue-500 hover:bg-blue-600 rounded-md text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-1"
+            <Button
+              class="w-full bg-blue-500 text-white hover:bg-blue-400"
               @click="() => emit('view-teacher', teacher)"
             >
               Подробнее
-            </button>
+            </Button>
           </div>
         </div>
       </div>
